@@ -8,6 +8,7 @@ import {
   SlashCommandBuilder,
   type APIActionRowComponent,
 } from "discord.js";
+import { ButtonType } from "../types/counter.types";
 
 export const data = new SlashCommandBuilder()
   .setName("create-counter")
@@ -24,14 +25,18 @@ export async function execute(interaction: CommandInteraction) {
   }
   const { value: counteName } = option;
 
+  const minusOneButton = new ButtonBuilder()
+    .setCustomId(ButtonType.MINUS_ONE)
+    .setLabel("-1")
+    .setStyle(ButtonStyle.Primary);
   const plusOneButton = new ButtonBuilder()
-    .setCustomId("plus-one")
+    .setCustomId(ButtonType.PLUS_ONE)
     .setLabel("+1")
     .setStyle(ButtonStyle.Primary);
 
-  const row = new ActionRowBuilder<ButtonBuilder>().addComponents(
-    plusOneButton
-  );
+  const row = new ActionRowBuilder<ButtonBuilder>()
+    .addComponents(minusOneButton)
+    .addComponents(plusOneButton);
 
   const response = await interaction.reply({
     content: `${counteName}: 0`,
